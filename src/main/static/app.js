@@ -1,11 +1,11 @@
-makeRequest("GET", "./users").then(function(users) {
+makeRequest("GET", "/users").then(function(users) {
     var container = document.querySelector("[type=User]");
     for (var i = 0; i < users.length; i++) {
         display(container, users[i], "C");
     }
 });
 
-var source = new EventSource("./users/events");
+var source = new EventSource("/users/events");
 source.onmessage = function(event) {
     if (Notification.permission === "granted") {
         var n = new Notification("Data updated !", {
@@ -42,7 +42,7 @@ function display(container, data, operationType){
             + ", Age: " + data.age;
     }
 }
-function makeRequest(method,url,data) {
+function makeRequest(method, url, data) {
     var data = data || '';
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
@@ -50,8 +50,7 @@ function makeRequest(method,url,data) {
         req.onload = function() {
             if (req.status === 200) {
                 resolve(JSON.parse(req.response));
-            }
-            else {
+            } else {
                 reject(Error(req.statusText));
             }
         };
