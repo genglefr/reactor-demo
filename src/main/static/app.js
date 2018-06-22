@@ -12,8 +12,10 @@ function initObjects(type, path){
 
 var source = new EventSource("/events");
 source.onmessage = function(event) {
-    notify("Data updated!", event.data);
     var eventData = JSON.parse(event.data);
+    var action = eventData.operationType === "C" ? "created" :
+        (eventData.operationType === "U" ? "updated" : "deleted");
+    notify(eventData.resourceType + " " + action + " !", event.data);
     var container = document.querySelector("[type=" + eventData.resourceType + "]");
     display(container, eventData.resource, eventData.operationType);
 };
