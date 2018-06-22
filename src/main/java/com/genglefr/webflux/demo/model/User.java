@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.validation.constraints.NotNull;
 
@@ -42,4 +41,10 @@ public class User implements Entity {
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String getResourceType() {
+        return getClass().getSimpleName();
+    }
+
 }

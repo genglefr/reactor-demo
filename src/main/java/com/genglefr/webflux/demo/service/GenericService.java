@@ -6,6 +6,9 @@ import com.genglefr.webflux.demo.model.Event;
 import com.genglefr.webflux.demo.model.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,7 +17,7 @@ import java.util.Optional;
 @Transactional
 public class GenericService<T extends Entity> {
     @Autowired
-    MongoRepository<T, String> genericRepository;
+    CrudRepository<T, String> genericRepository;
     @Autowired
     EventRepository eventRepository;
 
@@ -36,7 +39,7 @@ public class GenericService<T extends Entity> {
         }
     }
 
-    public List<T> findAll() {
+    public Iterable<T> findAll() {
         return genericRepository.findAll();
     }
 }

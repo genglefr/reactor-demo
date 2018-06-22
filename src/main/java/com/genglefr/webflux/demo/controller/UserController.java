@@ -13,7 +13,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping(value = "users")
-    public List<User> all() {
+    public Iterable<User> all() {
         return this.userService.findAll();
     }
 
