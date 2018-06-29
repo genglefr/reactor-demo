@@ -1,15 +1,19 @@
 package com.genglefr.webflux.demo.controller;
 
+import com.genglefr.webflux.demo.model.EmptyEntity;
+import com.genglefr.webflux.demo.model.Event;
+import com.genglefr.webflux.demo.model.OperationType;
 import com.genglefr.webflux.demo.model.Pet;
+import com.genglefr.webflux.demo.service.EventService;
 import com.genglefr.webflux.demo.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class PetController {
 
+    @Autowired
+    private EventService eventService;
     @Autowired
     private PetService petService;
 
@@ -32,5 +36,17 @@ public class PetController {
     @DeleteMapping(value = "pet/{id}")
     public void delete(@PathVariable("id") String id) {
         this.petService.delete(id);
+    }
+
+    @PostMapping(value = "pet/event")
+    public void updateEvent(@RequestBody Pet pet) {
+        Event event = new Event(pet, OperationType.U);
+        this.eventService.save(event);
+    }
+
+    @PostMapping(value = "pet/event/{id}")
+    public void deleteEvent(@PathVariable("id") final String id) {
+        final String resourceType = Pet.class.getSimpleName();
+        this.eventService.save(new Event(new EmptyEntity(id, Pet.class.getSimpleName()), OperationType.D));
     }
 }

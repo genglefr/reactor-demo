@@ -25,7 +25,7 @@ public class Event {
     public Event(Entity resource, OperationType operationType) {
         this.resource = resource;
         this.resourceId = resource.getId();
-        this.resourceType = resource.getClass().getSimpleName();
+        this.resourceType = resource.getResourceType();
         this.operationType = operationType;
         this.date = new Date();
     }
