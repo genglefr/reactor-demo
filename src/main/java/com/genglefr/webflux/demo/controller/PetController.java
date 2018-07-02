@@ -33,20 +33,13 @@ public class PetController {
         this.petService.save(pet);
     }
 
+    @PostMapping(value = "pet/event/{id}")
+    public void handle(@PathVariable("id") final String id, @RequestBody Pet pet) {
+        this.eventService.handleEvent(id, pet);
+    }
+
     @DeleteMapping(value = "pet/{id}")
     public void delete(@PathVariable("id") String id) {
         this.petService.delete(id);
-    }
-
-    @PostMapping(value = "pet/event")
-    public void updateEvent(@RequestBody Pet pet) {
-        Event event = new Event(pet, OperationType.U);
-        this.eventService.save(event);
-    }
-
-    @PostMapping(value = "pet/event/{id}")
-    public void deleteEvent(@PathVariable("id") final String id) {
-        final String resourceType = Pet.class.getSimpleName();
-        this.eventService.save(new Event(new EmptyEntity(id, Pet.class.getSimpleName()), OperationType.D));
     }
 }

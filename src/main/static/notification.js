@@ -1,10 +1,10 @@
 if (Notification.permission !== 'denied') {
     Notification.requestPermission();
 }
-function notify(title, body) {
+function notify(data, action) {
     if (Notification.permission === "granted") {
-        var n = new Notification(title, {
-            body: body,
+        var n = new Notification("Data " + (action === "U" ? "updated" : "deleted") + " !", {
+            body: data,
             icon: "/icon.png"
         });
         n.onclick = function (event) {
