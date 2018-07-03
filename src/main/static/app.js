@@ -1,11 +1,11 @@
-//initObjects("User", "/users");
+initObjects("User", "/users");
 initObjects("Pet", "/pets");
 
 function initObjects(type, path){
     makeRequest("GET", path).then(function(objects) {
-        var container = document.querySelector("[type=" + type + "]");
         for (var i = 0; i < objects.length; i++) {
-            display(objects[i], "C");
+            objects[i].class = type;
+            display(objects[i], "C", type);
         }
     });
 }
@@ -15,8 +15,9 @@ source.onmessage = function(event) {
     console.log(event.data);
     var eventData = JSON.parse(event.data);
     var action = !eventData._class ? "D" : "U";
+    eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
     notify(eventData, action);
-    display(eventData, action);
+    display(eventData, action, eventData);
 };
 source.onerror = function(event) {
     console.log(event);
@@ -29,7 +30,7 @@ function display(data, action){
             object.remove();
     } else {
         if (!object) {
-            var container = document.querySelector("[type=Pet]")
+            var container = document.querySelector("[type=" + data.class + "]");
             object = document.createElement("li");
             object.id = "id-" + data.id;
             container.appendChild(object);
@@ -39,11 +40,11 @@ function display(data, action){
 }
 
 function toString(data) {
-    /*if (data._class.split('.').pop() === "User")
+    if (data.class === "User")
         return "Firstname: " + data.firstname
             + ", Lastname: " + data.lastname
             + ", Age: " + data.age;
-    if (data._class.split('.').pop() === "Pet")*/
+    if (data.class === "Pet")
         return "Name: " + data.name
             + ", Type: " + data.type;
 };

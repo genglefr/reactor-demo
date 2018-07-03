@@ -23,11 +23,6 @@ public class Pet implements Entity {
         return id;
     }
 
-    @Override
-    public String getResourceType() {
-        return getClass().getSimpleName();
-    }
-
     public void setId(String id) {
         this.id = id;
     }

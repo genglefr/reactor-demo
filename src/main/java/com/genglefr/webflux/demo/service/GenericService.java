@@ -1,45 +1,31 @@
 package com.genglefr.webflux.demo.service;
 
-import com.genglefr.webflux.demo.integration.EventRepository;
 import com.genglefr.webflux.demo.model.Entity;
-import com.genglefr.webflux.demo.model.Event;
-import com.genglefr.webflux.demo.model.OperationType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.repository.reactive.ReactiveCrudRepository;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.couchbase.repository.CouchbaseRepository;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Transactional
 public class GenericService<T extends Entity> {
     @Autowired
-    CrudRepository<T, String> genericRepository;
-    @Autowired
-    EventRepository eventRepository;
+    CouchbaseRepository<T, String> genericRepository;
 
     public T save(T entity) {
-        OperationType operationType = entity.getId() == null ? OperationType.C : OperationType.U;
-        T returned = genericRepository.save(entity);
-        eventRepository.save(new Event(entity, operationType));
-        return returned;
+        return genericRepository.save(entity);
     }
 
     public void delete(String id) {
-        Optional<T> result = genericRepository.findById(id);
-        if (result.isPresent()) {
-            T entity = result.get();
-            genericRepository.delete(entity);
-            this.eventRepository.save(new Event(entity, OperationType.D));
-        } else {
-            throw new IllegalArgumentException("Entity not found for id: " + id);
-        }
+        genericRepository.deleteById(id);
     }
 
     public Iterable<T> findAll() {
         return genericRepository.findAll();
+    }
+
+    public Optional<T> findById(String id) {
+        return this.genericRepository.findById(id);
     }
 }

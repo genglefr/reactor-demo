@@ -4,8 +4,7 @@ import com.genglefr.webflux.demo.model.User;
 import com.genglefr.webflux.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import reactor.core.publisher.Flux;
 
 @RestController
 public class UserController {
