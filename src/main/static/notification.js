@@ -3,8 +3,9 @@ if (Notification.permission !== 'denied') {
 }
 function notify(data, action) {
     if (Notification.permission === "granted") {
+        var body = data.toString();
         var n = new Notification("Data " + (action === "U" ? "updated" : "deleted") + " !", {
-            body: data,
+            body: body ? body : "",
             icon: "/icon.png"
         });
         n.onclick = function (event) {

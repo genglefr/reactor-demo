@@ -2,12 +2,12 @@ package com.genglefr.webflux.demo.service;
 
 import com.couchbase.client.spring.cache.CouchbaseCacheManager;
 import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+
+import javax.annotation.PostConstruct;
 
 @Service
 public class CacheService {
@@ -16,32 +16,18 @@ public class CacheService {
     @Autowired
     private Publisher<Message<String>> couchbaseEvents;
 
-    @Bean
-    public Subscriber<Message<String>> cacheEvicter() {
-        Subscriber<Message<String>> cacheEvicter = new Subscriber<Message<String>>() {
-            @Override
-            public void onSubscribe(Subscription subscription) {
+    //@PostConstruct
+    public void cacheEvicter() {
+        Flux.from(this.couchbaseEvents)
+                .map(Message::getPayload).subscribe(s -> {
+            handle(s);
+        });
+    }
 
-            }
-
-            @Override
-            public void onNext(Message<String> message) {
-                for (String cacheName : couchbaseCacheManager.getCacheNames()) {
-                    couchbaseCacheManager.getCache(cacheName).evict(message.getPayload());
-                }
-            }
-
-            @Override
-            public void onError(Throwable throwable) {
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        };
-        couchbaseEvents.subscribe(cacheEvicter);
-        return cacheEvicter;
+    private void handle(String message) {
+        System.out.println(message);
+        for (String cacheName : couchbaseCacheManager.getCacheNames()) {
+            couchbaseCacheManager.getCache(cacheName).evict(message);
+        }
     }
 }
