@@ -1,8 +1,10 @@
-if (Notification.permission !== 'denied') {
-    Notification.requestPermission();
+if (window.Notification) {
+    if (Notification.permission !== 'denied') {
+        Notification.requestPermission();
+    }
 }
 function notify(data, action) {
-    if (Notification.permission === "granted") {
+    if (window.Notification && Notification.permission === "granted") {
         var body = data.toString();
         var n = new Notification("Data " + (action === "U" ? "updated" : "deleted") + " !", {
             body: body ? body : "",

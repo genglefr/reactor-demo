@@ -11,19 +11,23 @@ function initObjects(type, path){
     });
 }
 
-var source = new EventSource("/events");
-source.onmessage = function(event) {
-    console.log(event.data);
-    var eventData = JSON.parse(event.data);
-    var action = !eventData._class ? "D" : "U";
-    eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
-    eventData.toString = toString;
-    notify(eventData, action);
-    display(eventData, action, eventData);
-};
-source.onerror = function(event) {
-    console.log(event);
-};
+if (!window.EventSource) {
+    alert("Update your browser");
+} else {
+    var source = new EventSource("/events");
+    source.onmessage = function(event) {
+        console.log(event.data);
+        var eventData = JSON.parse(event.data);
+        var action = !eventData._class ? "D" : "U";
+        eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
+        eventData.toString = toString;
+        notify(eventData, action);
+        display(eventData, action, eventData);
+    };
+    source.onerror = function(event) {
+        console.log(event);
+    };
+}
 
 function display(data, action){
     var object = document.querySelector("#id-" + data.id);
