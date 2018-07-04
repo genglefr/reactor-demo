@@ -1,0 +1,1 @@
+CREATE PRIMARY INDEX `data-primary-index` on `data`;
