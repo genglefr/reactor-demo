@@ -20,6 +20,7 @@ h2 {
 }
 li {
     padding: 5px;
+    transition: background-color 1s ease-out;
 }
 li img {
     width: 40px;

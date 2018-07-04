@@ -6,7 +6,7 @@ function initObjects(type, path){
         for (var i = 0; i < objects.length; i++) {
             objects[i].class = type;
             objects[i].toString = toString;
-            display(objects[i], "C", type);
+            display(objects[i], "C");
         }
     });
 }
@@ -16,20 +16,19 @@ if (!window.EventSource) {
 } else {
     var source = new EventSource("/events");
     source.onmessage = function(event) {
-        console.log(event.data);
         var eventData = JSON.parse(event.data);
         var action = !eventData._class ? "D" : "U";
         eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
         eventData.toString = toString;
         notify(eventData, action);
-        display(eventData, action, eventData);
+        display(eventData, action, true);
     };
     source.onerror = function(event) {
         console.log(event);
     };
 }
 
-function display(data, action){
+function display(data, action, isEventSource){
     var object = document.querySelector("#id-" + data.id);
     if (action === "D") {
         if (object)
@@ -41,7 +40,23 @@ function display(data, action){
             object.id = "id-" + data.id;
             container.appendChild(object);
         }
+        if (isEventSource) {
+            highlight(object);
+        }
         object.textContent = data;
+    }
+}
+
+function highlight(object) {
+    if (object) {
+        var transition = object.style.transition;
+        var backgroundColor = object.style.backgroundColor;
+        object.style.transition = "unset";
+        object.style.backgroundColor = "lightskyblue";
+        window.setTimeout(function(){
+            object.style.transition = transition;
+            object.style.backgroundColor = backgroundColor;
+        }, 500);
     }
 }
 
