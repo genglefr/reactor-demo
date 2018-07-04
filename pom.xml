@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.genglefr</groupId>
-    <artifactId>webflux.demo</artifactId>
+    <artifactId>reactor.demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>webflux.demo</name>
-    <description>Demo project for Spring Boot 2, Webflux and Source Events</description>
+    <name>reactor.demo</name>
+    <description>POC for Spring Boot 2, Webflux, Server Sent Events and Couchbase Eventing</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
