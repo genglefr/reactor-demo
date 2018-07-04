@@ -34,11 +34,13 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
     @Override
     protected String getBucketName() {
+        //bucket name must match an existing user as well
         return "data";
     }
 
     @Override
     protected String getBucketPassword() {
+        //password of the user that has admin rights on the bucket
         return "password";
     }
 
