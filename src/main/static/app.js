@@ -54,8 +54,10 @@ function highlight(object) {
         object.style.transition = "unset";
         object.style.backgroundColor = "lightskyblue";
         window.setTimeout(function(){
-            object.style.transition = transition;
-            object.style.backgroundColor = backgroundColor;
+            requestAnimationFrame(function () {
+                object.style.transition = transition;
+                object.style.backgroundColor = backgroundColor;
+            });
         }, 500);
     }
 }
