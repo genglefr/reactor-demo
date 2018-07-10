@@ -53,7 +53,7 @@ function highlight(object) {
         var backgroundColor = object.style.backgroundColor;
         object.style.transition = "unset";
         object.style.backgroundColor = "lightskyblue";
-        window.setTimeout(function(){
+        window.setTimeout(function() {
             requestAnimationFrame(function () {
                 object.style.transition = transition;
                 object.style.backgroundColor = backgroundColor;
