@@ -54,20 +54,36 @@ function highlight(object) {
         object.style.transition = "unset";
         object.style.backgroundColor = "lightskyblue";
         window.setTimeout(function() {
-            window.requestAnimationFrame(function () {
-                object.style.transition = transition;
-                object.style.backgroundColor = backgroundColor;
-            });
+            object.style.transition = transition;
+            object.style.backgroundColor = backgroundColor;
         }, 500);
     }
 }
 
 var toString = function() {
     if (this.class === "User")
-        return "Firstname: " + this.firstname
-            + ", Lastname: " + this.lastname
-            + ", Age: " + this.age;
+        return getNumberIcon(this.age) + " " + this.firstname
+            + " " + this.lastname;
     if (this.class === "Pet")
-        return "Name: " + this.name
-            + ", Type: " + this.type;
+        return getPetIcon(this.type) + " " + this.name;
 };
+
+function getPetIcon(type){
+    switch(type) {
+        case "CAT":
+            return "😺";
+        case "DOG":
+            return "🐶";
+        case "FISH":
+            return "🐠";
+    }
+}
+
+function getNumberIcon(num){
+    var icon = [];
+    var numString = num.toString();
+    for(var i = 0; i < numString.length; i++) {
+        icon.push(numString[i]+"️⃣");
+    }
+    return icon.join('');
+}

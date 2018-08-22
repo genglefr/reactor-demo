@@ -21,6 +21,7 @@ h2 {
 li {
     padding: 5px;
     transition: background-color 1s ease-out;
+    font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
 }
 li img {
     width: 40px;
