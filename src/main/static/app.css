@@ -5,6 +5,7 @@ body {
 h2 {
     font-weight: bold;
     display: inline-block;
+    margin: 12px;
 }
 .refresh {
     font-size: 80%;
@@ -13,10 +14,23 @@ h2 {
 .header {
     background: #ECECEC;
     padding: 5px;
-    padding-left: 20px;
+}
+.jupiler {
+    background: unset;
+    height: 80px;
+    vertical-align: bottom;
+    display: inline-block;
+}
+.jupiler > img {
+    height: 100%;
+    float: left;
 }
 .suggestions {
     border: 2px solid #ECECEC;
+}
+ul {
+    list-style-type: none;
+    padding-left: 10px;
 }
 li {
     padding: 5px;
@@ -24,9 +38,12 @@ li {
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
 }
 li img {
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     border-radius: 20px;
+    vertical-align: bottom;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 li .username, li .close {
     display: inline-block;

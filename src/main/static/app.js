@@ -1,5 +1,6 @@
-initObjects("User", "/users");
-initObjects("Pet", "/pets");
+//initObjects("User", "/users");
+//initObjects("Pet", "/pets");
+initObjects("Game", "/games");
 
 function initObjects(type, path){
     makeRequest("GET", path).then(function(objects) {
@@ -17,7 +18,7 @@ if (!window.EventSource) {
     var source = new EventSource("/events");
     source.onmessage = function(event) {
         var eventData = JSON.parse(event.data);
-        var action = !eventData._class ? "D" : "U";
+        var action = eventData._class ? "U" : "D";
         eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
         eventData.toString = toString;
         notify(eventData, action);
@@ -43,7 +44,7 @@ function display(data, action, isEventSource){
         if (isEventSource) {
             highlight(object);
         }
-        object.textContent = data;
+        object.innerHTML  = data;
     }
 }
 
@@ -60,12 +61,16 @@ function highlight(object) {
     }
 }
 
-var toString = function() {
+var toString = function(avoidHTML) {
     if (this.class === "User")
         return getNumberIcon(this.age) + " " + this.firstname
             + " " + this.lastname;
     if (this.class === "Pet")
         return getPetIcon(this.type) + " " + this.name;
+    if (this.class === "Game")
+        return (!avoidHTML?'<img src="./team-flags/'+this.teamHome+'.png" />':'') +
+            this.teamHome + ' ' + (!avoidHTML?getNumberIcon(this.teamHomeScore):this.teamHomeScore) + (avoidHTML?'-':'') + (!avoidHTML?getNumberIcon(this.teamAwayScore):this.teamAwayScore) + ' ' + this.teamAway +
+            (!avoidHTML?'<img src="./team-flags/'+this.teamAway+'.png" />':'');
 };
 
 function getPetIcon(type){

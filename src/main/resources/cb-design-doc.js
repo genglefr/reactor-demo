@@ -10,3 +10,9 @@ function (doc, meta) {
         emit(meta.id, null);
     }
 }
+//_design/game/all
+function (doc, meta) {
+    if(doc._class === "com.genglefr.webflux.demo.model.Game"){
+        emit(meta.id, null);
+    }
+}

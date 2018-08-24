@@ -5,11 +5,11 @@ if (window.Notification) {
 }
 function notify(data, action) {
     if (window.Notification && Notification.permission === "granted") {
-        var body = data.toString();
-        var n = new Notification("Data " + (action === "U" ? "updated" : "deleted") + " !", {
+        var body = data.toString(true);
+        var n = new Notification("GOOOAAAL !", {
             body: body ? body : "",
             icon: "/icon.png",
-            tag: Math.floor(new Date().valueOf())
+            tag: data.id
         });
         n.onclick = function (event) {
             if (highlight) {
