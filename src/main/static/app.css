@@ -7,6 +7,9 @@ h2 {
     display: inline-block;
     margin: 12px;
 }
+h2 span {
+    font-size: smaller
+}
 .refresh {
     font-size: 80%;
     margin-left: 10px;
@@ -18,8 +21,6 @@ h2 {
 .jupiler {
     background: unset;
     height: 80px;
-    vertical-align: bottom;
-    display: inline-block;
 }
 .jupiler > img {
     height: 100%;
@@ -30,12 +31,16 @@ h2 {
 }
 ul {
     list-style-type: none;
-    padding-left: 10px;
+    padding-left: 0px;
 }
 li {
     padding: 5px;
-    transition: background-color 1s ease-out;
+    transition: background-color 3s ease-out;
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
+    border-bottom: 0.5px solid black;
+}
+li:last-child {
+    border-bottom: unset;
 }
 li img {
     width: 20px;

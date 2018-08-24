@@ -9,7 +9,8 @@ function notify(data, action) {
         var n = new Notification("GOOOAAAL !", {
             body: body ? body : "",
             icon: "/icon.png",
-            tag: data.id
+            tag: data.id,
+            requireInteraction: true
         });
         n.onclick = function (event) {
             if (highlight) {
