@@ -6,7 +6,6 @@ import com.couchbase.client.java.CouchbaseCluster;
 import com.couchbase.client.spring.cache.CacheBuilder;
 import com.couchbase.client.spring.cache.CouchbaseCacheManager;
 import org.reactivestreams.Publisher;
-import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
@@ -19,9 +18,7 @@ import org.springframework.integration.http.dsl.Http;
 import org.springframework.messaging.Message;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Configuration
 @EnableCouchbaseRepositories
@@ -66,6 +63,6 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
     @Bean
     public CouchbaseCacheManager cacheManager() {
-        return new CouchbaseCacheManager(CacheBuilder.newInstance(bucket()), "pets", "users");
+        return new CouchbaseCacheManager(CacheBuilder.newInstance(bucket()), "pets", "users", "games");
     }
 }
