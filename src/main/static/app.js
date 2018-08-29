@@ -1,5 +1,3 @@
-//initObjects("User", "/users");
-//initObjects("Pet", "/pets");
 initObjects("Game", "/games");
 
 function initObjects(type, path){
