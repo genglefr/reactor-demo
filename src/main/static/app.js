@@ -10,9 +10,31 @@ function initObjects(type, path){
     });
 }
 
+var toString = function(avoidHTML) {
+    if (this.class === "User")
+        return getNumberIcon(this.age) + " " + this.firstname
+            + " " + this.lastname;
+    if (this.class === "Pet")
+        return getPetIcon(this.type) + " " + this.name;
+    if (this.class === "Game")
+        return (!avoidHTML?'<img src="./team-flags/'+this.teamHome+'.png" />':'') +
+            this.teamHome + ' ' + (!avoidHTML?getNumberIcon(this.teamHomeScore):this.teamHomeScore) + (avoidHTML?'-':'') + (!avoidHTML?getNumberIcon(this.teamAwayScore):this.teamAwayScore) + ' ' + this.teamAway +
+            (!avoidHTML?'<img src="./team-flags/'+this.teamAway+'.png" />':'');
+};
+
 if (!window.EventSource) {
-    alert("Update your browser");
+    var script = document.createElement("script");
+    script.onload = function() {
+        console.log("using pollyfill...");
+        createEventSource();
+    };
+    //script.src = "./eventsource.js";
+    document.head.appendChild(script);
 } else {
+    createEventSource();
+}
+
+function createEventSource() {
     var source = new EventSource("/events");
     source.onmessage = function(event) {
         var eventData = JSON.parse(event.data);
@@ -42,7 +64,7 @@ function display(data, action, isEventSource){
         if (isEventSource) {
             highlight(object);
         }
-        object.innerHTML  = data;
+        object.innerHTML  = data.toString();
     }
 }
 
@@ -58,18 +80,6 @@ function highlight(object) {
         }, 500);
     }
 }
-
-var toString = function(avoidHTML) {
-    if (this.class === "User")
-        return getNumberIcon(this.age) + " " + this.firstname
-            + " " + this.lastname;
-    if (this.class === "Pet")
-        return getPetIcon(this.type) + " " + this.name;
-    if (this.class === "Game")
-        return (!avoidHTML?'<img src="./team-flags/'+this.teamHome+'.png" />':'') +
-            this.teamHome + ' ' + (!avoidHTML?getNumberIcon(this.teamHomeScore):this.teamHomeScore) + (avoidHTML?'-':'') + (!avoidHTML?getNumberIcon(this.teamAwayScore):this.teamAwayScore) + ' ' + this.teamAway +
-            (!avoidHTML?'<img src="./team-flags/'+this.teamAway+'.png" />':'');
-};
 
 function getPetIcon(type){
     switch(type) {
