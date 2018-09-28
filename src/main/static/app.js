@@ -23,13 +23,9 @@ var toString = function(avoidHTML) {
 };
 
 if (!window.EventSource) {
-    var script = document.createElement("script");
-    script.onload = function() {
-        console.log("using pollyfill...");
+    loadScript("./eventsource.js").then(function() {
         createEventSource();
-    };
-    //script.src = "./eventsource.js";
-    document.head.appendChild(script);
+    });
 } else {
     createEventSource();
 }
