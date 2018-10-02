@@ -13,11 +13,11 @@ import java.time.Duration;
 @RestController
 public class EventController {
     @Autowired
-    private Publisher<Message<String>> couchbaseEvents;
+    private Publisher<Message<String>> couchbaseEventPublisher;
 
     @GetMapping(value = "events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> eventSource() {
-        return Flux.from(this.couchbaseEvents)
+        return Flux.from(this.couchbaseEventPublisher)
                 .delayElements(Duration.ofSeconds(5))
                 .map(Message::getPayload);
     }

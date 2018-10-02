@@ -42,7 +42,7 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     }
 
     @Bean
-    public Publisher<Message<String>> httpReactiveSource() {
+    public Publisher<Message<String>> couchbaseEventPublisher() {
         return IntegrationFlows.
                 from(Http.inboundChannelAdapter("/event/{id}")
                         .requestMapping(r -> r.methods(HttpMethod.POST)))

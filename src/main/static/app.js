@@ -71,8 +71,10 @@ function highlight(object) {
         object.style.transition = "unset";
         object.style.backgroundColor = "#ff6666";
         window.setTimeout(function() {
-            object.style.transition = transition;
-            object.style.backgroundColor = backgroundColor;
+            window.requestAnimationFrame(function() {
+                object.style.transition = transition;
+                object.style.backgroundColor = backgroundColor;
+            });
         }, 500);
     }
 }
