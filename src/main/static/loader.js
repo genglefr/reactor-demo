@@ -7,5 +7,9 @@ function loadScript(url) {
             console.log("Script loaded: '" + url + "'");
             resolve();
         };
+        script.onerror = function() {
+            console.log("Error loading script: '" + url + "'");
+            reject();
+        };
     });
 }
