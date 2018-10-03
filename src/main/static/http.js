@@ -1,4 +1,4 @@
-function makeRequest(method, url, data) {
+function httprequest(method, url, data) {
     var data = data || '';
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();

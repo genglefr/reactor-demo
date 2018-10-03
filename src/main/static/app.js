@@ -1,7 +1,7 @@
 initObjects("Game", "/games");
 
 function initObjects(type, path){
-    makeRequest("GET", path).then(function(objects) {
+    httprequest("GET", path).then(function(objects) {
         for (var i = 0; i < objects.length; i++) {
             objects[i].class = type;
             objects[i].toString = toString;
