@@ -18,6 +18,9 @@ h2 span {
     background: #ECECEC;
     padding: 5px;
 }
+.container {
+    max-width: 400px;
+}
 .jupiler {
     background: unset;
     height: 80px;
@@ -34,7 +37,8 @@ ul {
     padding-left: 0px;
 }
 li {
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     transition: background-color 3s ease-out;
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
     border-bottom: 0.5px solid black;
@@ -55,4 +59,18 @@ li .username, li .close {
     position: relative;
     bottom: 15px;
     left: 5px;
+}
+div .left {
+    float: left;
+    text-align: right;
+    width: calc(50% - 30px);
+}
+div .right {
+    float: right;
+    width: calc(50% - 30px);
+}
+div .center {
+    margin: 0 auto;
+    text-align: center;
+    width: 60px
 }

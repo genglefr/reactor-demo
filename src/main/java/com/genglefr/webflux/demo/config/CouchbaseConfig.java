@@ -45,7 +45,9 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     public Publisher<Message<String>> couchbaseEventPublisher() {
         return IntegrationFlows.
                 from(Http.inboundChannelAdapter("/event/{id}")
-                        .requestMapping(r -> r.methods(HttpMethod.POST)))
+                        .requestMapping(r -> r.methods(HttpMethod.POST)
+                                .headers("user-agent=couchbase-eventing/5.5")
+                                .consumes("application/json")))
                 .log(LoggingHandler.Level.INFO)
                 .channel(MessageChannels.publishSubscribe())
                 .toReactivePublisher();

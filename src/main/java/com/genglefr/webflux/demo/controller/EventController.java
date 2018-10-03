@@ -18,7 +18,7 @@ public class EventController {
     @GetMapping(value = "events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> eventSource() {
         return Flux.from(this.couchbaseEventPublisher)
-                .delayElements(Duration.ofSeconds(5))
+                .delayElements(Duration.ofSeconds(2))
                 .map(Message::getPayload);
     }
 }

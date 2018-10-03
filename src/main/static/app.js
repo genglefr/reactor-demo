@@ -11,15 +11,12 @@ function initObjects(type, path){
 }
 
 var toString = function(avoidHTML) {
-    if (this.class === "User")
-        return getNumberIcon(this.age) + " " + this.firstname
-            + " " + this.lastname;
-    if (this.class === "Pet")
-        return getPetIcon(this.type) + " " + this.name;
     if (this.class === "Game")
-        return (!avoidHTML?'<img src="./team-flags/'+this.teamHome+'.png" />':'') +
-            this.teamHome + ' ' + (!avoidHTML?getNumberIcon(this.teamHomeScore):this.teamHomeScore) + (avoidHTML?'-':'') + (!avoidHTML?getNumberIcon(this.teamAwayScore):this.teamAwayScore) + ' ' + this.teamAway +
-            (!avoidHTML?'<img src="./team-flags/'+this.teamAway+'.png" />':'');
+        if (avoidHTML)
+            return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
+        return '<div class="left"><img src="./team-flags/'+this.teamHome+'.png" />' + this.teamHome + '</div>'
+            + '<div class="right">' + this.teamAway + '<img src="./team-flags/'+this.teamAway+'.png" /></div>'
+            + '<div class="center">'+getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
 };
 
 if (!window.EventSource) {
@@ -76,17 +73,6 @@ function highlight(object) {
                 object.style.backgroundColor = backgroundColor;
             });
         }, 500);
-    }
-}
-
-function getPetIcon(type){
-    switch(type) {
-        case "CAT":
-            return "😺";
-        case "DOG":
-            return "🐶";
-        case "FISH":
-            return "🐠";
     }
 }
 
