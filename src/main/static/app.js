@@ -72,7 +72,7 @@ function highlight(object) {
                 object.style.transition = transition;
                 object.style.backgroundColor = backgroundColor;
             });
-        }, 500);
+        }, 800);
     }
 }
 
