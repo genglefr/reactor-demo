@@ -1,7 +1,7 @@
 initObjects("Game", "/games");
 
-function initObjects(type, path){
-    httprequest("GET", path).then(function(objects) {
+function initObjects(type, path) {
+    httprequest("GET", path).then(function (objects) {
         for (var i = 0; i < objects.length; i++) {
             objects[i].class = type;
             objects[i].toString = toString;
@@ -10,17 +10,17 @@ function initObjects(type, path){
     });
 }
 
-var toString = function(avoidHTML) {
+var toString = function (avoidHTML) {
     if (this.class === "Game")
         if (avoidHTML)
             return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
-        return '<div class="left"><img src="./team-flags/'+this.teamHome+'.png" />' + this.teamHome + '</div>'
-            + '<div class="right">' + this.teamAway + '<img src="./team-flags/'+this.teamAway+'.png" /></div>'
-            + '<div class="center">'+getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
+    return '<div class="left"><img src="images/team-flags/' + this.teamHome + '.png" />' + this.teamHome + '</div>'
+        + '<div class="right">' + this.teamAway + '<img src="images/team-flags/' + this.teamAway + '.png" /></div>'
+        + '<div class="center">' + getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
 };
 
 if (!window.EventSource) {
-    loadScript("./eventsource.js").then(function() {
+    loadScript("./eventsource.js").then(function () {
         createEventSource();
     });
 } else {
@@ -29,7 +29,7 @@ if (!window.EventSource) {
 
 function createEventSource() {
     var source = new EventSource("/events");
-    source.onmessage = function(event) {
+    source.onmessage = function (event) {
         var eventData = JSON.parse(event.data);
         var action = eventData._class ? "U" : "D";
         eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
@@ -37,12 +37,12 @@ function createEventSource() {
         notify(eventData, action);
         display(eventData, action, true);
     };
-    source.onerror = function(event) {
+    source.onerror = function (event) {
         console.log(event);
     };
 }
 
-function display(data, action, isEventSource){
+function display(data, action, isEventSource) {
     var object = document.querySelector("#id-" + data.id);
     if (action === "D") {
         if (object)
@@ -57,7 +57,7 @@ function display(data, action, isEventSource){
         if (isEventSource) {
             highlight(object);
         }
-        object.innerHTML  = data.toString();
+        object.innerHTML = data.toString();
     }
 }
 
@@ -67,20 +67,18 @@ function highlight(object) {
         var backgroundColor = object.style.backgroundColor;
         object.style.transition = "unset";
         object.style.backgroundColor = "#ff6666";
-        window.setTimeout(function() {
-            window.requestAnimationFrame(function() {
-                object.style.transition = transition;
-                object.style.backgroundColor = backgroundColor;
-            });
-        }, 800);
+        window.setTimeout(function () {
+            object.style.transition = transition;
+            object.style.backgroundColor = backgroundColor;
+        }, 500);
     }
 }
 
-function getNumberIcon(num){
+function getNumberIcon(num) {
     var icon = [];
     var numString = num.toString();
-    for(var i = 0; i < numString.length; i++) {
-        icon.push(numString[i]+"️⃣");
+    for (var i = 0; i < numString.length; i++) {
+        icon.push(numString[i] + "️⃣");
     }
     return icon.join('');
 }

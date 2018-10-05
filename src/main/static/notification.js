@@ -8,7 +8,7 @@ function notify(data, action) {
         var body = data.toString(true);
         var n = new Notification("GOOOAAAL !", {
             body: body ? body : "",
-            icon: "/icon.png",
+            icon: "/images/notification.png",
             tag: data.id,
             requireInteraction: true
         });
