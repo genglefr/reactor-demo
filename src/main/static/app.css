@@ -24,6 +24,7 @@ h2 span {
 .jupiler {
     background: unset;
     height: 80px;
+    white-space: nowrap
 }
 .jupiler > img {
     height: 100%;
@@ -41,6 +42,7 @@ li {
     padding-bottom: 5px;
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
     border-bottom: 0.5px solid black;
+    white-space: nowrap;
 }
 li:last-child {
     border-bottom: unset;
@@ -59,6 +61,10 @@ li .username, li .close {
     bottom: 15px;
     left: 5px;
 }
+li div {
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
 div .left {
     float: left;
     text-align: right;
@@ -76,5 +82,9 @@ div .center {
 
 @keyframes highlight {
     0%   {background: #ff6666;}
+    1%   {background: #ffffff;}
+    2%   {background: #ff6666;}
+    3%   {background: #ffffff;}
+    4%   {background: #ff6666;}
     100% {background: #ffffff;}
 }
