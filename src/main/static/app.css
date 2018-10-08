@@ -39,7 +39,6 @@ ul {
 li {
     padding-top: 5px;
     padding-bottom: 5px;
-    transition: background-color 3s ease-out;
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
     border-bottom: 0.5px solid black;
 }
@@ -73,4 +72,9 @@ div .center {
     margin: 0 auto;
     text-align: center;
     width: 60px
+}
+
+@keyframes highlight {
+    0%   {background: #ff6666;}
+    100% {background: #ffffff;}
 }

@@ -53,23 +53,18 @@ function display(data, action, isEventSource) {
             object.id = "id-" + data.id;
             container.appendChild(object);
         }
+        object.innerHTML = data.toString();
         if (isEventSource) {
             highlight(object);
         }
-        object.innerHTML = data.toString();
     }
 }
 
 function highlight(object) {
     if (object) {
-        var transition = object.style.transition;
-        var backgroundColor = object.style.backgroundColor;
-        object.style.transition = "unset";
-        object.style.backgroundColor = "#ff6666";
-        window.setTimeout(function () {
-            object.style.transition = transition;
-            object.style.backgroundColor = backgroundColor;
-        }, 500);
+        object.style.animation = "unset";
+        void object.offsetWidth;
+        object.style.animation = "highlight 5s";
     }
 }
 
