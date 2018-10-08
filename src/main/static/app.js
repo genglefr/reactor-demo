@@ -11,9 +11,8 @@ function initObjects(type, path) {
 }
 
 var toString = function (avoidHTML) {
-    if (this.class === "Game")
-        if (avoidHTML)
-            return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
+    if (avoidHTML)
+        return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
     return '<div class="left"><img src="images/team-flags/' + this.teamHome + '.png" />' + this.teamHome + '</div>'
         + '<div class="right">' + this.teamAway + '<img src="images/team-flags/' + this.teamAway + '.png" /></div>'
         + '<div class="center">' + getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
