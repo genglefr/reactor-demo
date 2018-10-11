@@ -29,7 +29,7 @@ if (!window.EventSource) {
 function createEventSource() {
     var source = new EventSource("/events");
     source.onmessage = function (event) {
-        var eventData = JSON.parse(atob(JSON.parse(event.data).payload));
+        var eventData = JSON.parse(atob(JSON.parse(event.data)));
         var action = eventData._class ? "U" : "D";
         eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
         eventData.toString = toString;
