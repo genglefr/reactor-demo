@@ -11,10 +11,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
 import org.springframework.data.couchbase.repository.config.EnableCouchbaseRepositories;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.channel.MessageChannels;
 import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.http.dsl.Http;
+import org.springframework.integration.webflux.dsl.WebFlux;
 import org.springframework.messaging.Message;
 
 import java.util.Arrays;
@@ -39,18 +42,6 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     protected String getBucketPassword() {
         //password of the user that has admin rights on the bucket
         return "password";
-    }
-
-    @Bean
-    public Publisher<Message<String>> couchbaseEventPublisher() {
-        return IntegrationFlows.
-                from(Http.inboundChannelAdapter("/event/{id}")
-                        .requestMapping(r -> r.methods(HttpMethod.POST)
-                                .headers("user-agent=couchbase-eventing/5.5")
-                                .consumes("application/json")))
-                .log(LoggingHandler.Level.INFO)
-                .channel(MessageChannels.publishSubscribe())
-                .toReactivePublisher();
     }
 
     @Bean(destroyMethod = "disconnect")

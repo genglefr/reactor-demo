@@ -30,4 +30,14 @@ public class GameController {
     public void delete(@PathVariable("id") String id) {
         this.gameService.delete(id);
     }
+
+    @PostMapping(value = "games/reset")
+    public void reset() {
+        for (Game game : this.gameService.findAll()) {
+            if (game.hasScored()) {
+                game.reset();
+                this.gameService.save(game);
+            }
+        }
+    }
 }
