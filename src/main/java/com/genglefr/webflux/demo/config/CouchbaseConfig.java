@@ -14,7 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.channel.MessageChannels;
 import org.springframework.integration.handler.LoggingHandler;
-import org.springframework.integration.http.dsl.Http;
+import org.springframework.integration.webflux.dsl.WebFlux;
 import org.springframework.messaging.Message;
 
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     @Bean
     public Publisher<Message<String>> couchbaseEventPublisher() {
         return IntegrationFlows.
-                from(Http.inboundChannelAdapter("/event/{id}")
+                from(WebFlux.inboundChannelAdapter("/event/{id}")
                         .requestMapping(r -> r.methods(HttpMethod.POST)
                                 .headers("user-agent=couchbase-eventing/5.5")
                                 .consumes("application/json")))

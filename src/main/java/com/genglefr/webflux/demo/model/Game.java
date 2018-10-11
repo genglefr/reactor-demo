@@ -30,4 +30,13 @@ public class Game implements Entity {
     public void setId(String id) {
         this.id = id;
     }
+
+    public void reset() {
+        this.teamHomeScore = 0;
+        this.teamAwayScore = 0;
+    }
+
+    public boolean hasScored() {
+        return this.teamHomeScore != 0 || this.teamAwayScore != 0;
+    }
 }
