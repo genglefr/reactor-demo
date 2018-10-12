@@ -24,6 +24,6 @@ public class EventController {
         return Flux.from(this.couchbaseEventPublisher)
                 .map(Message::getPayload)
                 .filterWhen(game -> Mono.just(game.isFavorite(teams)))
-                .delayElements(Duration.ofMillis(100));
+                .delayElements(Duration.ofMillis(500));
     }
 }
