@@ -50,14 +50,10 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
                         .requestMapping(r -> r.methods(HttpMethod.POST)
                                 .headers("user-agent=couchbase-eventing/5.5")
                                 .consumes("application/json")))
-                .transform(gameTransformer())
+                .transform(new JsonToObjectTransformer(Game.class))
                 .log(LoggingHandler.Level.INFO)
                 .channel(MessageChannels.publishSubscribe())
                 .toReactivePublisher();
-    }
-
-    public JsonToObjectTransformer gameTransformer() {
-        return new JsonToObjectTransformer(Game.class);
     }
 
     @Bean(destroyMethod = "disconnect")
