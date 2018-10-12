@@ -1,62 +1,100 @@
-initObjects("Game", "/games");
+if (!window.EventSource) {
+    loadScript("./eventsource.js").then(function () {
+        createEventSource().then(function () {
+            initObjects("Game", "/games")
+        });
+    });
+} else {
+    createEventSource().then(function () {
+        initObjects("Game", "/games")
+    });
+}
 
 function initObjects(type, path) {
     httprequest("GET", path).then(function (objects) {
         for (var i = 0; i < objects.length; i++) {
-            objects[i].class = type;
-            objects[i].toString = toString;
-            display(objects[i], "C");
+            objects[i].print = print;
+            display(objects[i]);
         }
     });
 }
 
-var toString = function (avoidHTML) {
+var print = function (avoidHTML) {
     if (avoidHTML)
         return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
-    return '<div class="left"><img src="images/team-flags/' + this.teamHome + '.png" />' + this.teamHome + '</div>'
-        + '<div class="right">' + this.teamAway + '<img src="images/team-flags/' + this.teamAway + '.png" /></div>'
+    var homeTeamClass = window.teams.includes(this.teamHome) ? "left favourite" : "left";
+    var awayTeamClass = window.teams.includes(this.teamAway) ? "right favourite" : "right";
+    return '<div onclick="toggleFavouriteTeam(\'' + this.teamHome + '\',this)" class="' + homeTeamClass + '"><img src="images/team-flags/' + this.teamHome + '.png" />' + this.teamHome + '</div>'
+        + '<div onclick="toggleFavouriteTeam(\'' + this.teamAway + '\',this)" class="' + awayTeamClass + '">' + this.teamAway + '<img src="images/team-flags/' + this.teamAway + '.png" /></div>'
         + '<div class="center">' + getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
 };
 
-if (!window.EventSource) {
-    loadScript("./eventsource.js").then(function () {
-        createEventSource();
-    });
-} else {
-    createEventSource();
-}
-
 function createEventSource() {
-    var source = new EventSource("/events");
-    source.onmessage = function (event) {
-        var eventData = JSON.parse(atob(JSON.parse(event.data)));
-        var action = eventData._class ? "U" : "D";
-        eventData.class = eventData._class ? eventData._class.split('.').pop() : undefined;
-        eventData.toString = toString;
-        notify(eventData, action);
-        display(eventData, action, true);
-    };
-    source.onerror = function (event) {
-        console.log(event);
-    };
+    return new Promise(function (resolve, reject) {
+        getFavoriteTeams().then(function () {
+            var sourceUrl = "/events" + (teams.length > 0 ? "?teams=" + teams.join(',') : "");
+            if (window.source) window.source.close();
+            window.source = new EventSource(sourceUrl);
+            window.source.onmessage = function (event) {
+                var eventData = JSON.parse(event.data);
+                eventData.print = print;
+                notify(eventData);
+                display(eventData, true);
+            };
+            window.source.onerror = function (event) {
+                console.log(event);
+            };
+            resolve();
+        }).catch(function (e) {
+            reject(e);
+        });
+    });
 }
 
-function display(data, action, isEventSource) {
-    var object = document.querySelector("#id-" + data.id);
-    if (action === "D") {
-        if (object)
-            object.remove();
+function getFavoriteTeams() {
+    return new Promise(function (resolve, reject) {
+        teamDb.getAll().then(function (teams) {
+            var result = [];
+            teams.forEach(function (team) {
+                result.push(team.name);
+            });
+            window.teams = result;
+            resolve();
+        }).catch(function (e) {
+            reject(e);
+        });
+    });
+}
+
+function toggleFavouriteTeam(name, div) {
+    if (div.classList.contains("favourite")) {
+        teamDb.deleteTeam(name).then(function () {
+            div.classList.remove("favourite");
+            createEventSource();
+        }).catch(function (e) {
+            console.log(e);
+        });
     } else {
-        if (!object) {
-            var container = document.querySelector("[type=" + data.class + "]");
-            object = document.createElement("li");
-            object.id = "id-" + data.id;
-            container.appendChild(object);
-        }
-        object.innerHTML = data.toString();
-        if (isEventSource) {
-            highlight(object);
-        }
+        teamDb.createTeam(name).then(function () {
+            div.classList.add("favourite");
+            createEventSource();
+        }).catch(function (e) {
+            console.log(e);
+        });
+    }
+}
+
+function display(data, isEventSource) {
+    var object = document.querySelector("#id-" + data.id);
+    if (!object) {
+        var container = document.querySelector("[type=Game]");
+        object = document.createElement("li");
+        object.id = "id-" + data.id;
+        container.appendChild(object);
+    }
+    object.innerHTML = data.print();
+    if (isEventSource) {
+        highlight(object);
     }
 }
 

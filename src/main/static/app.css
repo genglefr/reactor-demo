@@ -2,52 +2,62 @@ body {
     font-family: sans-serif;
     padding: 10px;
 }
+
 h2 {
     font-weight: bold;
     display: inline-block;
     margin: 12px;
 }
+
 h2 span {
     font-size: smaller
 }
+
 .refresh {
     font-size: 80%;
     margin-left: 10px;
 }
+
 .header {
     background: #ECECEC;
     padding: 5px;
 }
+
 .container {
-    max-width: 400px;
+    max-width: 420px;
 }
+
 .jupiler {
     background: unset;
     height: 80px;
     white-space: nowrap;
     overflow: hidden;
 }
+
 .jupiler > img {
     height: 100%;
     float: left;
 }
+
 .suggestions {
     border: 2px solid #ECECEC;
 }
+
 ul {
     list-style-type: none;
     padding-left: 0px;
 }
+
 li {
-    padding-top: 5px;
-    padding-bottom: 5px;
-    font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
+    font-family: apple color emoji, segoe ui emoji, notocoloremoji, segoe ui symbol, android emoji, emojisymbols, emojione mozilla;
     border-bottom: 0.5px solid black;
     white-space: nowrap;
 }
+
 li:last-child {
     border-bottom: unset;
 }
+
 li img {
     width: 20px;
     height: 20px;
@@ -56,36 +66,74 @@ li img {
     margin-left: 5px;
     margin-right: 5px;
 }
+
 li .username, li .close {
     display: inline-block;
     position: relative;
     bottom: 15px;
     left: 5px;
 }
+
 li div {
     text-overflow: ellipsis;
     overflow: hidden;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    transition: background 1s ease;
 }
+
 div .left {
     float: left;
     text-align: right;
     width: calc(50% - 30px);
+    cursor: pointer;
+    background-position: right;
 }
+
 div .right {
     float: right;
     width: calc(50% - 30px);
+    cursor: pointer;
+    background-position: left;
 }
+
 div .center {
     margin: 0 auto;
     text-align: center;
     width: 60px
 }
 
+div .left.favourite {
+    background-position: left;
+}
+
+div .right.favourite {
+    background-position: right;
+}
+
+div .favourite {
+    background-image: url("/images/favourite.png");
+    background-size: 20px;
+    background-repeat: no-repeat;
+}
+
 @keyframes highlight {
-    0%   {background: #ff6666;}
-    1%   {background: #ffffff;}
-    2%   {background: #ff6666;}
-    3%   {background: #ffffff;}
-    4%   {background: #ff6666;}
-    100% {background: #ffffff;}
+    0% {
+        background: #ff6666;
+    }
+    1% {
+        background: #ffffff;
+    }
+    2% {
+        background: #ff6666;
+    }
+    3% {
+        background: #ffffff;
+    }
+    4% {
+        background: #ff6666;
+    }
+    100% {
+        background: #ffffff;
+    }
 }

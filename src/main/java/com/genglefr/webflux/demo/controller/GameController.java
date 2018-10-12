@@ -32,6 +32,16 @@ public class GameController {
         }
     }
 
+    @PostMapping(value = "games/random")
+    public void randomize() {
+        this.gameService.findAll().doOnNext(game -> randomize(game)).subscribe();
+    }
+
+    private void randomize(Game game) {
+        game.randomize();
+        this.gameService.save(game).subscribe();
+    }
+
     @PostMapping(value = "game")
     public void create(@RequestBody Game game) {
         this.gameService.save(game).subscribe();
