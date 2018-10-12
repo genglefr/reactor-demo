@@ -19,6 +19,13 @@ public class EventController {
     @Autowired
     private Publisher<Message<Game>> couchbaseEventPublisher;
 
+    @GetMapping(value = "events/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Game> events() {
+        return Flux.from(this.couchbaseEventPublisher)
+                .map(Message::getPayload)
+                .delayElements(Duration.ofMillis(500));
+    }
+
     @GetMapping(value = "events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Game> filteredEvents(@RequestParam(value = "teams", required = false) List<String> teams) {
         return Flux.from(this.couchbaseEventPublisher)

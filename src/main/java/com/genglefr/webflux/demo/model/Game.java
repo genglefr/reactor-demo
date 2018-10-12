@@ -36,25 +36,23 @@ public class Game implements Entity {
         this.id = id;
     }
 
-    public void reset() {
+    public Game reset() {
         this.teamHomeScore = 0;
         this.teamAwayScore = 0;
+        return this;
     }
 
-    public void randomize() {
+    public Game randomize() {
         Random rand = new Random();
         int bound = 5;
         this.teamHomeScore = rand.nextInt(bound);
         this.teamAwayScore = rand.nextInt(bound);
-    }
-
-    public boolean hasScored() {
-        return this.teamHomeScore != 0 || this.teamAwayScore != 0;
+        return this;
     }
 
     public boolean isFavorite(List<String> teams) {
         if (CollectionUtils.isEmpty(teams)) {
-            return true;
+            return false;
         }
         return teams.contains(this.teamHome) || teams.contains(this.teamAway);
     }

@@ -22,39 +22,11 @@ public class GameController {
 
     @DeleteMapping(value = "games")
     public void reset() {
-        this.gameService.findAll().doOnNext(game -> reset(game)).subscribe();
-    }
-
-    private void reset(Game game) {
-        if (game.hasScored()) {
-            game.reset();
-            this.gameService.save(game).subscribe();
-        }
+        this.gameService.findAll().doOnNext(game -> this.gameService.save(game.reset()).subscribe()).subscribe();
     }
 
     @PostMapping(value = "games/random")
     public void randomize() {
-        this.gameService.findAll().doOnNext(game -> randomize(game)).subscribe();
-    }
-
-    private void randomize(Game game) {
-        game.randomize();
-        this.gameService.save(game).subscribe();
-    }
-
-    @PostMapping(value = "game")
-    public void create(@RequestBody Game game) {
-        this.gameService.save(game).subscribe();
-    }
-
-    @PostMapping(value = "game/{id}")
-    public void update(@RequestBody Game game, @PathVariable("id") String id) {
-        game.setId(id);
-        this.gameService.save(game).subscribe();
-    }
-
-    @DeleteMapping(value = "game/{id}")
-    public void delete(@PathVariable("id") String id) {
-        this.gameService.delete(id).subscribe();
+        this.gameService.findAll().doOnNext(game -> this.gameService.save(game.randomize()).subscribe()).subscribe();
     }
 }
