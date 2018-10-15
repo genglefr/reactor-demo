@@ -103,16 +103,16 @@ div .center {
     width: 60px
 }
 
-div .left.favourite {
+div .left.fav {
     background-position: left;
 }
 
-div .right.favourite {
+div .right.fav {
     background-position: right;
 }
 
-div .favourite {
-    background-image: url("/images/favourite.png");
+div .fav {
+    background-image: url("/images/fav.png");
     background-size: 20px;
     background-repeat: no-repeat;
 }

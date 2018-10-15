@@ -40,15 +40,15 @@ public class EventController {
                 .toReactivePublisher();
     }
 
-    @GetMapping(value = "event/game/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "event/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Game> events() {
         return Flux.from(this.gameEventPublisher)
                 .map(Message::getPayload)
                 .delayElements(Duration.ofMillis(500));
     }
 
-    @GetMapping(value = "event/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Game> filteredEvents(@RequestParam(value = "favorites", required = false) List<String> favorites) {
+    @GetMapping(value = "event/fav/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Game> filteredEvents(@RequestParam(value = "fav", required = false) List<String> favorites) {
         return Flux.from(this.gameEventPublisher)
                 .map(Message::getPayload)
                 .filterWhen(game -> Mono.just(game.isFavorite(favorites)))

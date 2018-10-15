@@ -22,8 +22,8 @@ function initObjects(type, path) {
 var print = function (avoidHTML) {
     if (avoidHTML)
         return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
-    var homeTeamClass = window.teams.includes(this.teamHome) ? "left favourite" : "left";
-    var awayTeamClass = window.teams.includes(this.teamAway) ? "right favourite" : "right";
+    var homeTeamClass = window.teams.includes(this.teamHome) ? "left fav" : "left";
+    var awayTeamClass = window.teams.includes(this.teamAway) ? "right fav" : "right";
     return '<div onclick="toggleFavouriteTeam(\'' + this.teamHome + '\',this)" class="' + homeTeamClass + '"><img src="images/team-flags/' + this.teamHome + '.png" />' + this.teamHome + '</div>'
         + '<div onclick="toggleFavouriteTeam(\'' + this.teamAway + '\',this)" class="' + awayTeamClass + '">' + this.teamAway + '<img src="images/team-flags/' + this.teamAway + '.png" /></div>'
         + '<div class="center">' + getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
@@ -32,8 +32,8 @@ var print = function (avoidHTML) {
 function createEventSource() {
     return new Promise(function (resolve, reject) {
         getFavoriteTeams().then(function () {
-            var sourceUrl = "/event/game" + (teams.length > 0 ? "?favorites=" + teams.join(',') : "");
-            //var sourceUrl = "/event/game/all";
+            var sourceUrl = "/event/fav/game" + (teams.length > 0 ? "?fav=" + teams.join(',') : "");
+            //var sourceUrl = "/event/game";
             if (window.source) window.source.close();
             window.source = new EventSource(sourceUrl);
             window.source.onmessage = function (event) {
@@ -68,16 +68,16 @@ function getFavoriteTeams() {
 }
 
 function toggleFavouriteTeam(name, div) {
-    if (div.classList.contains("favourite")) {
+    if (div.classList.contains("fav")) {
         teamDb.deleteTeam(name).then(function () {
-            div.classList.remove("favourite");
+            div.classList.remove("fav");
             createEventSource();
         }).catch(function (e) {
             console.log(e);
         });
     } else {
         teamDb.createTeam(name).then(function () {
-            div.classList.add("favourite");
+            div.classList.add("fav");
             createEventSource();
         }).catch(function (e) {
             console.log(e);
