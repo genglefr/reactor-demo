@@ -17,20 +17,20 @@ import java.util.List;
 @RestController
 public class EventController {
     @Autowired
-    private Publisher<Message<Game>> couchbaseEventPublisher;
+    private Publisher<Message<Game>> gameEventPublisher;
 
-    @GetMapping(value = "events/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(value = "event/game/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Game> events() {
-        return Flux.from(this.couchbaseEventPublisher)
+        return Flux.from(this.gameEventPublisher)
                 .map(Message::getPayload)
                 .delayElements(Duration.ofMillis(500));
     }
 
-    @GetMapping(value = "events", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Game> filteredEvents(@RequestParam(value = "teams", required = false) List<String> teams) {
-        return Flux.from(this.couchbaseEventPublisher)
+    @GetMapping(value = "event/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Game> filteredEvents(@RequestParam(value = "favorites", required = false) List<String> favorites) {
+        return Flux.from(this.gameEventPublisher)
                 .map(Message::getPayload)
-                .filterWhen(game -> Mono.just(game.isFavorite(teams)))
+                .filterWhen(game -> Mono.just(game.isFavorite(favorites)))
                 .delayElements(Duration.ofMillis(500));
     }
 }

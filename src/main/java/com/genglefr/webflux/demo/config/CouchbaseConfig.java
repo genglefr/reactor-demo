@@ -44,11 +44,12 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     }
 
     @Bean
-    public Publisher<Message<Game>> couchbaseEventPublisher() {
+    public Publisher<Message<Game>> gameEventPublisher() {
         return IntegrationFlows.
-                from(WebFlux.inboundChannelAdapter("/event/{id}")
+                from(WebFlux.inboundChannelAdapter("/events/{id}")
                         .requestMapping(r -> r.methods(HttpMethod.POST)
                                 .headers("user-agent=couchbase-eventing/5.5")
+                                .params("class=" + Game.class.getName())
                                 .consumes("application/json")))
                 .transform(new JsonToObjectTransformer(Game.class))
                 .log(LoggingHandler.Level.INFO)

@@ -32,8 +32,8 @@ var print = function (avoidHTML) {
 function createEventSource() {
     return new Promise(function (resolve, reject) {
         getFavoriteTeams().then(function () {
-            var sourceUrl = "/events" + (teams.length > 0 ? "?teams=" + teams.join(',') : "");
-            //var sourceUrl = "/events/all";
+            var sourceUrl = "/event/game" + (teams.length > 0 ? "?favorites=" + teams.join(',') : "");
+            //var sourceUrl = "/event/game/all";
             if (window.source) window.source.close();
             window.source = new EventSource(sourceUrl);
             window.source.onmessage = function (event) {
