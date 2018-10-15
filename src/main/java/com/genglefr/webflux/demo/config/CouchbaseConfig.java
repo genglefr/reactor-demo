@@ -3,8 +3,6 @@ package com.genglefr.webflux.demo.config;
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.CouchbaseCluster;
-import com.couchbase.client.spring.cache.CacheBuilder;
-import com.couchbase.client.spring.cache.CouchbaseCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.couchbase.config.AbstractCouchbaseConfiguration;
@@ -42,10 +40,5 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
     @Bean(destroyMethod = "close")
     public Bucket bucket() {
         return cluster().openBucket(getBucketName(), getBucketPassword());
-    }
-
-    @Bean
-    public CouchbaseCacheManager cacheManager() {
-        return new CouchbaseCacheManager(CacheBuilder.newInstance(bucket()), "games");
     }
 }
