@@ -3,7 +3,14 @@ package com.genglefr.webflux.demo.controller;
 import com.genglefr.webflux.demo.model.Game;
 import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.integration.dsl.IntegrationFlows;
+import org.springframework.integration.dsl.channel.MessageChannels;
+import org.springframework.integration.handler.LoggingHandler;
+import org.springframework.integration.json.JsonToObjectTransformer;
+import org.springframework.integration.webflux.dsl.WebFlux;
 import org.springframework.messaging.Message;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +25,20 @@ import java.util.List;
 public class EventController {
     @Autowired
     private Publisher<Message<Game>> gameEventPublisher;
+
+    @Bean
+    public Publisher<Message<Game>> gameEventPublisher() {
+        return IntegrationFlows.
+                from(WebFlux.inboundChannelAdapter("/event/{id}")
+                        .requestMapping(r -> r.methods(HttpMethod.POST)
+                                .headers("user-agent=couchbase-eventing/5.5")
+                                .params("class=" + Game.class.getName())
+                                .consumes("application/json")))
+                .transform(new JsonToObjectTransformer(Game.class))
+                .log(LoggingHandler.Level.INFO)
+                .channel(MessageChannels.publishSubscribe())
+                .toReactivePublisher();
+    }
 
     @GetMapping(value = "event/game/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Game> events() {
