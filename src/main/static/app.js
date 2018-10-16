@@ -24,8 +24,8 @@ var print = function (avoidHTML) {
         return this.teamHome + ' ' + this.teamHomeScore + '-' + this.teamAwayScore + ' ' + this.teamAway;
     var homeTeamClass = window.teams.includes(this.teamHome) ? "left fav" : "left";
     var awayTeamClass = window.teams.includes(this.teamAway) ? "right fav" : "right";
-    return '<div onclick="toggleFavouriteTeam(\'' + this.teamHome + '\',this)" class="' + homeTeamClass + '"><img src="images/team-flags/' + this.teamHome + '.png" />' + this.teamHome + '</div>'
-        + '<div onclick="toggleFavouriteTeam(\'' + this.teamAway + '\',this)" class="' + awayTeamClass + '">' + this.teamAway + '<img src="images/team-flags/' + this.teamAway + '.png" /></div>'
+    return '<div onclick="toggleFavouriteTeam(\'' + this.teamHome + '\',this)" class="' + homeTeamClass + '"><img src="images/team-flags/' + this.teamHome + '.png" /><span>' + this.teamHome + '</span></div>'
+        + '<div onclick="toggleFavouriteTeam(\'' + this.teamAway + '\',this)" class="' + awayTeamClass + '"><span>' + this.teamAway + '</span><img src="images/team-flags/' + this.teamAway + '.png" /></div>'
         + '<div class="center">' + getNumberIcon(this.teamHomeScore) + getNumberIcon(this.teamAwayScore) + '</div>';
 };
 

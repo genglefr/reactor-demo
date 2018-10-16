@@ -32,10 +32,6 @@ public class Game implements Entity {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public Game reset() {
         this.teamHomeScore = 0;
         this.teamAwayScore = 0;

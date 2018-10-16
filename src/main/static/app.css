@@ -1,6 +1,14 @@
+@font-face {
+    font-family: Noto;
+    src: url(NotoSans-Regular.ttf);
+}
+@font-face {
+    font-family: Noto;
+    src: url(NotoSans-Bold.ttf);
+    font-weight: bold;
+}
 body {
-    font-family: sans-serif;
-    padding: 10px;
+    font-family: Noto;
 }
 
 h2 {
@@ -13,13 +21,7 @@ h2 span {
     font-size: smaller
 }
 
-.refresh {
-    font-size: 80%;
-    margin-left: 10px;
-}
-
 .header {
-    background: #ECECEC;
     padding: 5px;
 }
 
@@ -28,7 +30,6 @@ h2 span {
 }
 
 .jupiler {
-    background: unset;
     height: 80px;
     white-space: nowrap;
     overflow: hidden;
@@ -39,19 +40,16 @@ h2 span {
     float: left;
 }
 
-.suggestions {
-    border: 2px solid #ECECEC;
-}
-
 ul {
     list-style-type: none;
     padding-left: 0px;
 }
 
 li {
-    font-family: apple color emoji, segoe ui emoji, notocoloremoji, segoe ui symbol, android emoji, emojisymbols, emojione mozilla;
     border-bottom: 0.5px solid black;
     white-space: nowrap;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 li:last-child {
@@ -75,11 +73,9 @@ li .username, li .close {
 }
 
 li div {
+    transition: background 1s ease;
     text-overflow: ellipsis;
     overflow: hidden;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    transition: background 1s ease;
 }
 
 div .left {
@@ -100,7 +96,8 @@ div .right {
 div .center {
     margin: 0 auto;
     text-align: center;
-    width: 60px
+    width: 60px;
+    font-family: apple color emoji, segoe ui emoji, notocoloremoji, segoe ui symbol, android emoji, emojisymbols, emojione mozilla;
 }
 
 div .left.fav {
