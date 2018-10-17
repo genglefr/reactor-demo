@@ -12,6 +12,7 @@ function notify(data) {
             icon: "/images/notification.png",
             tag: data.id
         });
+        setTimeout(n.close.bind(n), 5000);
         n.onclick = function (event) {
             if (highlight) {
                 var object = document.querySelector("#id-" + data.id);
