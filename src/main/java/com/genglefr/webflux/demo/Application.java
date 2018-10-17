@@ -19,9 +19,4 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
-    @Bean
-    public RouterFunction<ServerResponse> indexRouter(@Value("file:src/main/static/index.html") final Resource indexHtml) {
-        return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).syncBody(indexHtml));
-    }
 }

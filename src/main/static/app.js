@@ -45,6 +45,9 @@ function createEventSource() {
             window.source.onerror = function (event) {
                 console.log(event);
             };
+            window.onbeforeunload = function() {
+                window.source.close();
+            }
             resolve();
         }).catch(function (e) {
             reject(e);
