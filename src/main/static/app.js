@@ -3,11 +3,13 @@ if (!window.EventSource) {
         createEventSource().then(function () {
             initObjects("Game", "/games")
         });
+        createCounterEventSource();
     });
 } else {
     createEventSource().then(function () {
         initObjects("Game", "/games")
     });
+    createCounterEventSource();
 }
 
 function initObjects(type, path) {
@@ -45,11 +47,31 @@ function createEventSource() {
             window.source.onerror = function (event) {
                 console.log(event);
             };
+            window.onbeforeunload = function () {
+                window.source.close();
+            }
             resolve();
         }).catch(function (e) {
             reject(e);
         });
     });
+}
+
+function createCounterEventSource() {
+    if (window.counterSource) window.counterSource.close();
+    window.counterSource = new EventSource("event/subscription/count");
+    window.counterSource.onmessage = function (event) {
+        var eventData = JSON.parse(event.data);
+        var container = document.querySelector("[class=counter]");
+        if (container.innerHTML) highlight(container, "highlight_black");
+        container.innerHTML = "#" + eventData;
+    };
+    window.counterSource.onerror = function (event) {
+        console.log(event);
+    };
+    window.onbeforeunload = function () {
+        window.counterSource.close();
+    }
 }
 
 function getFavoriteTeams() {
@@ -99,11 +121,12 @@ function display(data, isEventSource) {
     }
 }
 
-function highlight(object) {
+function highlight(object, style) {
+    if (!style) style = "highlight"
     if (object) {
         object.style.animation = "unset";
         void object.offsetWidth;
-        object.style.animation = "highlight 5s";
+        object.style.animation = style + " 5s";
     }
 }
 

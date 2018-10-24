@@ -2,12 +2,15 @@ package com.genglefr.webflux.demo.config;
 
 import com.genglefr.webflux.demo.model.Game;
 import org.reactivestreams.Publisher;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.handler.LoggingHandler;
@@ -24,6 +27,16 @@ import static org.springframework.web.reactive.function.server.ServerResponse.ok
 @Configuration
 public class RouteConfig {
 
+    @Autowired
+    HttpHandler httpHandler;
+
+    @Bean
+    public NettyReactiveWebServerFactory nettyReactiveWebServerFactory(@Value("${http.port:8080}") int port) {
+        NettyReactiveWebServerFactory factory = new NettyReactiveWebServerFactory(port);
+        factory.getWebServer(this.httpHandler).start();
+        return factory;
+    }
+
     @Bean
     public Publisher<Message<Game>> gameEventPublisher() {
         return IntegrationFlows.
@@ -33,7 +46,6 @@ public class RouteConfig {
                                 .params("class=" + Game.class.getName())
                                 .consumes("application/json")))
                 .transform(new JsonToObjectTransformer(Game.class))
-                .log(LoggingHandler.Level.INFO)
                 .channel(MessageChannels.publishSubscribe())
                 .toReactivePublisher();
     }

@@ -114,6 +114,17 @@ div .fav {
     background-repeat: no-repeat;
 }
 
+div .counter {
+    float: right;
+    border: solid black 1px;
+    border-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background: #000000;
+    color: #ffffff;
+    font-size: smaller;
+}
+
 @keyframes highlight {
     0% {
         background: #ff6666;
@@ -132,5 +143,27 @@ div .fav {
     }
     100% {
         background: #ffffff;
+    }
+}
+
+@keyframes highlight_black {
+    0% {
+        background: #ffffff;
+        color: #000000;
+    }
+    1% {
+        background: #000000;
+        color: #ffffff;
+    }
+    2% {
+        background: #ffffff;
+        color: #000000;
+    }
+    10% {
+        color: #ffffff;
+    }
+    100% {
+        background: #000000;
+        color: #ffffff;
     }
 }
