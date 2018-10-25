@@ -13,25 +13,31 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.HttpHandler;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.MessageChannels;
-import org.springframework.integration.handler.LoggingHandler;
 import org.springframework.integration.json.JsonToObjectTransformer;
 import org.springframework.integration.webflux.dsl.WebFlux;
 import org.springframework.messaging.Message;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
+import reactor.core.publisher.Mono;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Map;
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.GET;
 import static org.springframework.web.reactive.function.server.RouterFunctions.route;
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
 @Configuration
+@EnableScheduling
 public class RouteConfig {
 
     @Autowired
     HttpHandler httpHandler;
 
     @Bean
-    public NettyReactiveWebServerFactory nettyReactiveWebServerFactory(@Value("${http.port:8080}") int port) {
+    public NettyReactiveWebServerFactory nettyReactiveWebServerFactory(@Value("${http.port:8080}") Integer port) {
         NettyReactiveWebServerFactory factory = new NettyReactiveWebServerFactory(port);
         factory.getWebServer(this.httpHandler).start();
         return factory;
@@ -51,8 +57,17 @@ public class RouteConfig {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> indexRouter(@Value("file:src/main/static/index.html") final Resource indexHtml) {
-        return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).syncBody(indexHtml));
+    public RouterFunction<ServerResponse> indexRouter(@Value("file:src/main/static/index.html") final Resource indexHtml, @Value("${server.port:8443}") Integer port) throws UnknownHostException {
+        return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).syncBody(indexHtml))
+                .andRoute(GET("/deployment-info"), request -> ok().contentType(MediaType.APPLICATION_JSON).body(Mono.just(Map.of("applicationHostAddress", getHostAddress(), "applicationPort", port)), Map.class));
+    }
+
+    private String getHostAddress() {
+        try {
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

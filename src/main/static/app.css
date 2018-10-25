@@ -125,6 +125,10 @@ div .counter {
     font-size: smaller;
 }
 
+a {
+    color: unset;
+}
+
 @keyframes highlight {
     0% {
         background: #ff6666;

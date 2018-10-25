@@ -1,8 +1,9 @@
 function httprequest(method, url, data) {
-    var data = data || '';
+    var data = data ? JSON.stringify(data) : '';
     return new Promise(function(resolve, reject) {
         var req = new XMLHttpRequest();
         req.open(method, url);
+        if (data) req.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         req.onload = function() {
             if (req.status === 200) {
                 resolve(JSON.parse(req.response));

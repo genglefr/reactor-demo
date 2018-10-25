@@ -1,3 +1,10 @@
+httprequest("GET", "/deployment-info").then(function (info) {
+    var location = info.applicationHostAddress + ":" + info.applicationPort;
+    var link = document.querySelector("[class=deployment-info]");
+    link.href = "https://" + location;
+    link.innerHTML = location;
+});
+
 if (!window.EventSource) {
     loadScript("./eventsource.js").then(function () {
         createEventSource().then(function () {
@@ -45,7 +52,9 @@ function createEventSource() {
                 display(eventData, true);
             };
             window.source.onerror = function (event) {
-                console.log(event);
+                if (window.source.readyState == 2) {
+                    setTimeout(createEventSource, 5000);
+                }
             };
             window.onbeforeunload = function () {
                 window.source.close();
@@ -67,7 +76,9 @@ function createCounterEventSource() {
         container.innerHTML = "#" + eventData;
     };
     window.counterSource.onerror = function (event) {
-        console.log(event);
+        if (window.counterSource.readyState == 2) {
+            setTimeout(createCounterEventSource, 5000);
+        }
     };
     window.onbeforeunload = function () {
         window.counterSource.close();
@@ -122,7 +133,7 @@ function display(data, isEventSource) {
 }
 
 function highlight(object, style) {
-    if (!style) style = "highlight"
+    if (!style) style = "highlight";
     if (object) {
         object.style.animation = "unset";
         void object.offsetWidth;
