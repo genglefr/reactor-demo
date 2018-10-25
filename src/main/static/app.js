@@ -7,12 +7,13 @@ httprequest("GET", "/deployment-info").then(function (info) {
 
 if (!window.EventSource) {
     loadScript("./eventsource.js").then(function () {
-        createEventSource().then(function () {
-            initObjects("Game", "/games")
-        });
-        createCounterEventSource();
+        afterEventSourceScriptLoad();
     });
 } else {
+    afterEventSourceScriptLoad();
+}
+
+function afterEventSourceScriptLoad() {
     createEventSource().then(function () {
         initObjects("Game", "/games")
     });
