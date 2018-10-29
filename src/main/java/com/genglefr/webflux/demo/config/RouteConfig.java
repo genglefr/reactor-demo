@@ -57,7 +57,7 @@ public class RouteConfig {
     }
 
     @Bean
-    public RouterFunction<ServerResponse> indexRouter(@Value("file:src/main/static/index.html") final Resource indexHtml, @Value("${server.port:8443}") Integer port) throws UnknownHostException {
+    public RouterFunction<ServerResponse> indexRouter(@Value("file:src/main/static/index.html") final Resource indexHtml, @Value("${server.port:8443}") Integer port) {
         return route(GET("/"), request -> ok().contentType(MediaType.TEXT_HTML).syncBody(indexHtml))
                 .andRoute(GET("/deployment-info"), request -> ok().contentType(MediaType.APPLICATION_JSON).body(Mono.just(Map.of("applicationHostAddress", getHostAddress(), "applicationPort", port)), Map.class));
     }
