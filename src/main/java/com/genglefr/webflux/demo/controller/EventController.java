@@ -18,11 +18,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EventController {
     private final Flux<Game> events;
     private final FluxProcessor<Integer, Integer> subscriptions;
-    private static final AtomicInteger subscriptionCounter = new AtomicInteger(0);
 
     public EventController(@Autowired final Publisher<Message<Game>> gameEventPublisher) {
         this.subscriptions = DirectProcessor.<Integer>create();
         final FluxSink<Integer> sink = subscriptions.sink();
+        final AtomicInteger subscriptionCounter = new AtomicInteger(0);
         this.events = Flux.from(gameEventPublisher)
                 .doOnSubscribe(subscription -> sink.next(subscriptionCounter.incrementAndGet()))
                 .doOnCancel(() -> sink.next(subscriptionCounter.decrementAndGet()))
