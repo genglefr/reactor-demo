@@ -123,6 +123,7 @@ div .counter {
     background: #000000;
     color: #ffffff;
     font-size: smaller;
+    font-weight: bold;
 }
 
 a {

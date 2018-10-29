@@ -1,7 +1,7 @@
 httprequest("GET", "/deployment-info").then(function (info) {
-    var location = info.applicationHostAddress + ":" + info.applicationPort;
+    var location = "https://" + info.applicationHostAddress + ":" + info.applicationPort;
     var link = document.querySelector("[class=deployment-info]");
-    link.href = "https://" + location;
+    link.href = location;
     link.innerHTML = location;
 });
 
