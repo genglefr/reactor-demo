@@ -17,16 +17,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 @RestController
 public class EventController {
     private final Flux<Game> events;
-    private final FluxSink<Integer> sink;
-    private final FluxProcessor<Integer, Integer> processor;
-    private static final AtomicInteger counter = new AtomicInteger(0);
+    private final FluxProcessor<Integer, Integer> subscriptions;
+    private static final AtomicInteger subscriptionCounter = new AtomicInteger(0);
 
-    public EventController(@Autowired Publisher<Message<Game>> gameEventPublisher) {
-        this.processor = DirectProcessor.<Integer>create();
-        this.sink = processor.sink();
+    public EventController(@Autowired final Publisher<Message<Game>> gameEventPublisher) {
+        this.subscriptions = DirectProcessor.<Integer>create();
+        final FluxSink<Integer> sink = subscriptions.sink();
         this.events = Flux.from(gameEventPublisher)
-                .doOnSubscribe(subscription -> this.sink.next(counter.incrementAndGet()))
-                .doOnCancel(() -> this.sink.next(counter.decrementAndGet()))
+                .doOnSubscribe(subscription -> sink.next(subscriptionCounter.incrementAndGet()))
+                .doOnCancel(() -> sink.next(subscriptionCounter.decrementAndGet()))
                 .map(Message::getPayload);
     }
 
@@ -36,12 +35,12 @@ public class EventController {
     }
 
     @GetMapping(value = "event/fav/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Game> filteredEvents(@RequestParam(value = "fav", required = false) List<String> favorites) {
+    public Flux<Game> filteredEvents(@RequestParam(value = "fav", required = false) final List<String> favorites) {
         return this.events.filterWhen(game -> Mono.just(game.isFavorite(favorites))).delayElements(Duration.ofMillis(200));
     }
 
     @GetMapping(value = "event/subscription/count", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Integer> count() {
-        return this.processor.share();
+        return this.subscriptions;
     }
 }
