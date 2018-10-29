@@ -22,10 +22,10 @@ public class EventController {
     public EventController(@Autowired final Publisher<Message<Game>> gameEventPublisher) {
         this.subscriptions = DirectProcessor.<Integer>create();
         final FluxSink<Integer> sink = subscriptions.sink();
-        final AtomicInteger subscriptionCounter = new AtomicInteger(0);
+        final AtomicInteger counter = new AtomicInteger(0);
         this.events = Flux.from(gameEventPublisher)
-                .doOnSubscribe(subscription -> sink.next(subscriptionCounter.incrementAndGet()))
-                .doOnCancel(() -> sink.next(subscriptionCounter.decrementAndGet()))
+                .doOnSubscribe(subscription -> sink.next(counter.incrementAndGet()))
+                .doOnCancel(() -> sink.next(counter.decrementAndGet()))
                 .map(Message::getPayload);
     }
 
