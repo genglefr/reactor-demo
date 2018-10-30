@@ -14,14 +14,14 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.0.RC1</version>
+        <version>2.1.0</version>
         <relativePath/>
     </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>9</java.version>
+        <java.version>10</java.version>
     </properties>
 
     <dependencies>
@@ -74,6 +74,10 @@
 
     <repositories>
         <repository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/release</url>
+        </repository>
+        <repository>
             <id>spring-snapshots</id>
             <url>https://repo.spring.io/snapshot</url>
             <snapshots>
@@ -86,6 +90,10 @@
         </repository>
     </repositories>
     <pluginRepositories>
+        <pluginRepository>
+            <id>spring-releases</id>
+            <url>https://repo.spring.io/release</url>
+        </pluginRepository>
         <pluginRepository>
             <id>spring-snapshots</id>
             <url>https://repo.spring.io/snapshot</url>
