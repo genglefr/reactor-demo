@@ -34,13 +34,13 @@ public class EventController {
         return this.events.delayElements(Duration.ofMillis(200));
     }
 
-    @GetMapping(value = "event/fav/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Game> filteredEvents(@RequestParam(value = "fav", required = false) final List<String> favorites) {
-        return this.events.filterWhen(game -> Mono.just(game.isFavorite(favorites))).delayElements(Duration.ofMillis(200));
-    }
-
     @GetMapping(value = "event/subscription/count", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Integer> count() {
         return this.subscriptions;
+    }
+
+    @GetMapping(value = "event/fav/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Game> filteredEvents(@RequestParam(value = "fav", required = false) final List<String> favorites) {
+        return this.events.filterWhen(game -> Mono.just(game.isFavorite(favorites))).delayElements(Duration.ofMillis(200));
     }
 }
