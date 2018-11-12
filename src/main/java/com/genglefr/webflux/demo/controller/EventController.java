@@ -5,10 +5,14 @@ import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.messaging.Message;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.*;
+import reactor.core.publisher.DirectProcessor;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxProcessor;
+import reactor.core.publisher.FluxSink;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,18 +33,13 @@ public class EventController {
                 .map(Message::getPayload);
     }
 
-    @GetMapping(value = "event/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Game> events() {
-        return this.events.delayElements(Duration.ofMillis(200));
-    }
-
     @GetMapping(value = "event/subscription/count", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Integer> count() {
         return this.subscriptions;
     }
 
-    @GetMapping(value = "event/fav/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<Game> filteredEvents(@RequestParam(value = "fav", required = false) final List<String> favorites) {
-        return this.events.filter(game -> game.isFavorite(favorites)).delayElements(Duration.ofMillis(200));
+    @GetMapping(value = "event/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<Game> games(@RequestParam(value = "fav", required = false) final List<String> favorites) {
+        return this.events.filter(game -> CollectionUtils.isEmpty(favorites) || game.isFavorite(favorites)).delayElements(Duration.ofMillis(200));
     }
 }
