@@ -45,7 +45,7 @@ public class Game implements Entity {
         return this;
     }
 
-    public boolean isFavorite(List<String> teams) {
+    public boolean contains(List<String> teams) {
         if (CollectionUtils.isEmpty(teams)) {
             return false;
         }

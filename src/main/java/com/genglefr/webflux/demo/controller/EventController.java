@@ -40,6 +40,6 @@ public class EventController {
 
     @GetMapping(value = "event/game", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Game> games(@RequestParam(value = "fav", required = false) final List<String> favorites) {
-        return this.events.filter(game -> CollectionUtils.isEmpty(favorites) || game.isFavorite(favorites)).delayElements(Duration.ofMillis(200));
+        return this.events.filter(game -> CollectionUtils.isEmpty(favorites) || game.contains(favorites)).delayElements(Duration.ofMillis(200));
     }
 }
