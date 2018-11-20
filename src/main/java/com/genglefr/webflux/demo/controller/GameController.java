@@ -26,7 +26,7 @@ public class GameController {
     }
 
     @PostMapping(value = "games/random")
-    //@Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 10000)
     public void randomize() {
         this.gameService.findAll().doOnNext(game -> this.gameService.save(game.randomize()).subscribe()).subscribe();
     }
